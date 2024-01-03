@@ -25,6 +25,8 @@ import com.yandex.mapkit.map.CameraListener
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.CameraUpdateReason
 import com.yandex.mapkit.map.IconStyle
+import com.yandex.mapkit.map.InputListener
+import com.yandex.mapkit.map.MapObject
 import com.yandex.mapkit.map.MapObjectCollection
 import com.yandex.mapkit.map.PlacemarkMapObject
 import com.yandex.mapkit.user_location.UserLocationLayer
@@ -40,8 +42,8 @@ class Main : AppCompatActivity(), CameraListener {
     private val startLocation = Point(50.593679, 36.576692)
     private var zoomValue: Float = 17.0f
 
-    private lateinit var mapObjectCollection: MapObjectCollection
-    private lateinit var placemarkMapObject: PlacemarkMapObject
+    private lateinit var mapObjectCollectionSmaller: MapObjectCollection
+    private lateinit var mapObjectCollectionBigger: MapObjectCollection
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,9 +53,14 @@ class Main : AppCompatActivity(), CameraListener {
         setContentView(binding.root) // Размещаем пользовательский интерфейс в экране активности
 
         moveToStartLocation()
-        setMarkerInStartLocation()
+
+        mapObjectCollectionSmaller = binding.mapview.map.mapObjects // Инициализируем коллекцию различных объектов на карте
+        mapObjectCollectionBigger = binding.mapview.map.mapObjects // Инициализируем коллекцию различных объектов на карте
+        //setMarker(startLocation)
 
         binding.mapview.map.addCameraListener(this)
+
+        binding.mapview.map.addInputListener(inputListener)
     }
 
     private fun setApiKey(savedInstanceState: Bundle?) {
@@ -85,7 +92,7 @@ class Main : AppCompatActivity(), CameraListener {
 
     private fun moveToStartLocation() {
         binding.mapview.map.move(
-            CameraPosition(startLocation, zoomValue, 0.0f, 0.0f)
+            CameraPosition(startLocation, zoomValue, 0.0f, 45.0f)
         )
     }
 
@@ -94,14 +101,19 @@ class Main : AppCompatActivity(), CameraListener {
         const val ZOOM_BOUNDARY = 16.4f
         val marker = R.drawable.test // Добавляем ссылку на картинку
         val icstyle1 = IconStyle(null,null,null,null,null,0.05f,null)
-        val icstyle2 = IconStyle(null,null,null,null,null,0.025f,null)
+        val icstyle2 = IconStyle(null,null,null,null,null,0.3f,null)
     }
 
-    private fun setMarkerInStartLocation() {
-        mapObjectCollection = binding.mapview.map.mapObjects // Инициализируем коллекцию различных объектов на карте
-        placemarkMapObject = mapObjectCollection.addPlacemark(startLocation, ImageProvider.fromResource(this, marker)) // Добавляем метку со значком (тут что-то щёлкать?)
-        placemarkMapObject.opacity = 0.5f // Устанавливаем прозрачность метке
-        placemarkMapObject.setIcon(ImageProvider.fromResource(this, marker),icstyle1)
+    private fun setMarker(pointIn: Point) {
+        var placemarkMapObject = mapObjectCollectionSmaller.addPlacemark()
+        placemarkMapObject.geometry = pointIn
+        placemarkMapObject.setIcon(ImageProvider.fromResource(this, marker),icstyle2)
+
+//        placemarkMapObject = mapObjectCollectionBigger.addPlacemark(pointIn, ImageProvider.fromResource(this, marker))
+//        placemarkMapObject.opacity = 0.5f // Устанавливаем прозрачность метке
+//        placemarkMapObject.setIcon(ImageProvider.fromResource(this, marker),icstyle1)
+
+//        mapObjectCollectionSmaller.setVisible(true)
     }
 
     override fun onCameraPositionChanged(
@@ -110,15 +122,26 @@ class Main : AppCompatActivity(), CameraListener {
         cameraUpdateReason: CameraUpdateReason,
         finished: Boolean
     ) {
-        if (finished) { // Если камера закончила движение
-            when {
-                cameraPosition.zoom >= ZOOM_BOUNDARY -> {
-                    placemarkMapObject.setIcon(ImageProvider.fromResource(this, marker),icstyle1)
-                }
-                cameraPosition.zoom < ZOOM_BOUNDARY -> {
-                    placemarkMapObject.setIcon(ImageProvider.fromResource(this, marker),icstyle2)
-                }
-            }
+//        if (finished && mapObjectCollectionSmaller != null && mapObjectCollectionBigger != null) { // Если камера закончила движение и коллекция объектов не пустая
+//            when {
+//                cameraPosition.zoom >= ZOOM_BOUNDARY -> {
+//                    mapObjectCollectionBigger.setVisible(true)
+//                    mapObjectCollectionSmaller.setVisible(false)
+//                }
+//                cameraPosition.zoom < ZOOM_BOUNDARY -> {
+//                    mapObjectCollectionBigger.setVisible(false)
+//                    mapObjectCollectionSmaller.setVisible(true)
+//                }
+//            }
+//        }
+    }
+
+    val inputListener = object : InputListener {
+        override fun onMapTap(map: Map, point: Point) {
+        }
+
+        override fun onMapLongTap(map: Map, point: Point) {
+            setMarker(point)
         }
     }
 }
