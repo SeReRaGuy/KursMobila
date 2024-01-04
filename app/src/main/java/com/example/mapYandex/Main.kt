@@ -11,6 +11,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.PointF
+import android.provider.ContactsContract
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -100,20 +101,32 @@ class Main : AppCompatActivity(), CameraListener {
         const val MAPKIT_API_KEY = "acfc921a-3c8b-490a-8c83-b82f9fd50e44"
         const val ZOOM_BOUNDARY = 16.4f
         val marker = R.drawable.test // Добавляем ссылку на картинку
-        val icstyle1 = IconStyle(null,null,null,null,null,0.05f,null)
-        val icstyle2 = IconStyle(null,null,null,null,null,0.3f,null)
+        val icstyle1 = IconStyle(null,null,null,null,null,0.055f,null)
+        val icstyle2 = IconStyle(null,null,null,null,null,0.02f,null)
+        val markerDataList = HashMap<Int, PlacemarkMapObject>()
+        var Num : Int = 0
     }
 
     private fun setMarker(pointIn: Point) {
-        var placemarkMapObject = mapObjectCollectionSmaller.addPlacemark()
-        placemarkMapObject.geometry = pointIn
-        placemarkMapObject.setIcon(ImageProvider.fromResource(this, marker),icstyle2)
 
-//        placemarkMapObject = mapObjectCollectionBigger.addPlacemark(pointIn, ImageProvider.fromResource(this, marker))
-//        placemarkMapObject.opacity = 0.5f // Устанавливаем прозрачность метке
+
+//        ----Тут я пытался запихать placemarkMapObject в коллекцию и держать её там---
+//        var placemarkMapObject = mapObjectCollectionSmaller.addPlacemark()
+//        placemarkMapObject.geometry = pointIn
 //        placemarkMapObject.setIcon(ImageProvider.fromResource(this, marker),icstyle1)
+//        ---Не думаю, что это лучшая идея---
 
-//        mapObjectCollectionSmaller.setVisible(true)
+        //Нужно попытаться засунуть метки в мапу, чтобы они хранились
+        lateinit var placemarkMapObject : PlacemarkMapObject
+        placemarkMapObject = mapObjectCollectionBigger.addPlacemark(pointIn, ImageProvider.fromResource(this, marker))
+        placemarkMapObject.opacity = 0.5f // Устанавливаем прозрачность метке
+        placemarkMapObject.setIcon(ImageProvider.fromResource(this, marker),icstyle1)
+        markerDataList[Num] = placemarkMapObject //Хранение меток
+        Num += 1
+
+        //
+        //Замечено, что при создании нового placemarkMapObject, редактируется именно он, куда деваются старые???
+        //
     }
 
     override fun onCameraPositionChanged(
@@ -122,18 +135,22 @@ class Main : AppCompatActivity(), CameraListener {
         cameraUpdateReason: CameraUpdateReason,
         finished: Boolean
     ) {
-//        if (finished && mapObjectCollectionSmaller != null && mapObjectCollectionBigger != null) { // Если камера закончила движение и коллекция объектов не пустая
-//            when {
-//                cameraPosition.zoom >= ZOOM_BOUNDARY -> {
-//                    mapObjectCollectionBigger.setVisible(true)
-//                    mapObjectCollectionSmaller.setVisible(false)
-//                }
-//                cameraPosition.zoom < ZOOM_BOUNDARY -> {
-//                    mapObjectCollectionBigger.setVisible(false)
-//                    mapObjectCollectionSmaller.setVisible(true)
-//                }
-//            }
-//        }
+        if (finished) { // Если камера закончила движение
+            when {
+                cameraPosition.zoom >= ZOOM_BOUNDARY -> {
+                    for ((Num) in markerDataList)
+                    {
+                        markerDataList[Num]?.setIcon(ImageProvider.fromResource(this, marker),icstyle1)
+                    }
+                }
+                cameraPosition.zoom < ZOOM_BOUNDARY -> {
+                    for ((Num) in markerDataList)
+                    {
+                        markerDataList[Num]?.setIcon(ImageProvider.fromResource(this, marker),icstyle2)
+                    }
+                }
+            }
+        }
     }
 
     val inputListener = object : InputListener {

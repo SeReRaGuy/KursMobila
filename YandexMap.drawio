@@ -1,0 +1,127 @@
+<mxfile host="Electron" modified="2024-01-04T09:16:27.492Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.1.2 Chrome/106.0.5249.199 Electron/21.4.3 Safari/537.36" etag="vPw5jmstJ9dRgVpLjhxH" version="21.1.2" type="device">
+  <diagram name="Страница 1" id="KrPczdH8UlQR_7H5c0tH">
+    <mxGraphModel dx="1233" dy="755" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="2000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="ZDCd3lLpCzWTV3ufAdkY-2" value="PlacemarkMapObject" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=30;" parent="1" vertex="1">
+          <mxGeometry x="657.5" y="94" width="305" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="ZDCd3lLpCzWTV3ufAdkY-3" value="Объект на карте, который имеет позицию" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;fontColor=#828282;" parent="1" vertex="1">
+          <mxGeometry x="608" y="135" width="404" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="ZDCd3lLpCzWTV3ufAdkY-4" value="Методы:" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="307" y="168" width="65" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="ZDCd3lLpCzWTV3ufAdkY-6" value="- @NonNull&amp;nbsp;Point getGeometry&lt;br&gt;- void setGeometry(@NonNull Point geometry)" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="318" y="194" width="266" height="41" as="geometry" />
+        </mxCell>
+        <mxCell id="ZDCd3lLpCzWTV3ufAdkY-7" value="- float getDirection()&lt;br&gt;- void setDirection(float direction)&amp;nbsp;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="318" y="242" width="197" height="41" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-1" value="- float getOpacity()&lt;br&gt;- void setOpacity(float opacity)" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="318" y="289" width="179" height="41" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-2" value="- void setIcon(@NonNull ImageProvider image)&lt;br&gt;-&amp;nbsp;void setIcon(@NonNull ImageProvider image,&amp;nbsp;@NonNull IconStyle style)&lt;br&gt;-&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;void setIcon(@NonNull ImageProvider image,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;@NonNull Callback onFinished)&lt;br&gt;&lt;/span&gt;-&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;void setIcon(@NonNull ImageProvider image,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;@NonNull IconStyle style,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;@NonNull Callback unfinished)&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;br&gt;&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="318" y="334" width="581" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-3" value="получает и запрашивает Point" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="584" y="201.5" width="186" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-4" value="получает и запрашивает float - угол&amp;nbsp;&lt;span style=&quot;text-align: left;&quot;&gt;между направлением объекта и&lt;br&gt;&amp;nbsp;направлением на север (стандартное значение - 0.f.)&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="515" y="242" width="397" height="41" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-5" value="получает и запрашивает float - непрозрачность метки от 1 до 0" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="497" y="296.5" width="368" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-6" value="устанавливает передаваемый значок (image), его стиль (IconStyle), &lt;br&gt;обратный вызов - говорит о том, что иконка загрузилась (onFinished)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="899" y="348.5" width="402" height="41" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-8" value="- void setIconStyle(@NonNull IconStyle style)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="318" y="413" width="260" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-9" value="меняет стиль значка" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="578" y="413" width="133" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-11" value="&lt;div&gt;- @NonNull&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;CompositeIcon useCompositeIcon()&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="318" y="446" width="274" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-12" value="устанавливает и возвращает композиционную иконку &lt;font color=&quot;#ff0000&quot;&gt;*каким образом???*&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="592" y="446" width="432" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-13" value="&lt;div&gt;- @NonNull&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;PlacemarkAnimation useAnimation()&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="318" y="479" width="278" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-14" value="устанавливает и возвращает анимацию&amp;nbsp;&lt;font color=&quot;#ff0000&quot;&gt;*каким образом???*&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="596" y="479" width="356" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-16" value="-&amp;nbsp;void setView(@NonNull ViewProvider view)&lt;br&gt;-&amp;nbsp;void setView(@NonNull ViewProvider view,&amp;nbsp;@NonNull IconStyle style)&lt;br&gt;-&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;void setView(@NonNull ViewProvider view,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;@NonNull Callback onFinished)&lt;br&gt;&lt;/span&gt;-&amp;nbsp;void setView(@NonNull ViewProvider view,&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;@NonNull IconStyle style,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;@NonNull Callback onFinished)&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;br&gt;&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="318" y="513" width="571" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-18" value="устанавливает передаваемый вид (view), его стиль (IconStyle), &lt;br&gt;обратный вызов - говорит о том, что вид загрузился (onFinished)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="889" y="527.5" width="378" height="41" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-19" value="-&amp;nbsp;void setScaleFunction(@NonNull java.util.List&amp;lt;android.graphics.PointF&amp;gt; points)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="318" y="591" width="448" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-20" value="установка &lt;font color=&quot;#ff0000&quot;&gt;кусочно-линейного масштаба&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="766" y="591" width="241" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-21" value="-&amp;nbsp;void setText(@NonNull java.lang.String text)&lt;br&gt;-&amp;nbsp;void setText(@NonNull java.lang.String text,&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;@NonNull TextStyle style)&lt;br&gt;&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;- void setTextStyle(@NonNull TextStyle style)&lt;/span&gt;&lt;/div&gt;&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="318" y="625" width="402" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-22" value="установка текста и его стиля" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="720" y="639.5" width="178" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-25" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="280" y="720" as="sourcePoint" />
+            <mxPoint x="280" y="80" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-26" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1320" y="720" as="sourcePoint" />
+            <mxPoint x="1320" y="80" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-27" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1320" y="80" as="sourcePoint" />
+            <mxPoint x="280" y="80" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-28" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1320" y="720" as="sourcePoint" />
+            <mxPoint x="280" y="720" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-29" value="&lt;h1 style=&quot;box-sizing: border-box; margin-top: calc(25px - var(--dc-header-height, 0px)); margin-right: 0px; margin-bottom: 20px; margin-left: 0px; font-size: 32px; font-weight: 500; line-height: 40px; padding-top: calc(var(--dc-header-height, 0px)); color: rgba(0, 0, 0, 0.85); font-family: &amp;quot;YS Text&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, Arial, Helvetica, sans-serif; text-align: start; background-color: rgb(255, 255, 255);&quot;&gt;MapObjectCollection&lt;/h1&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=30;" vertex="1" parent="1">
+          <mxGeometry x="648" y="791" width="320" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-30" value="Коллекция объектов карты" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;fontColor=#828282;" vertex="1" parent="1">
+          <mxGeometry x="667" y="851" width="270" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-31" value="Методы:" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="519" y="890" width="65" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-33" value="&lt;div&gt;- @NonNull&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;PlacemarkMapObject addPlacemark()&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="575" y="930" width="290" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-34" value="создаёт и добавляет пустую метку" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="865" y="930" width="220" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-35" value="&lt;div&gt;- @NonNull&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;PlacemarkMapObject addPlacemark(@NonNull Placemark CreatedCallback placemarkCreatedCallback)&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="575" y="970" width="650" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-36" value="так же создаёт метку, но ещё и с обратным вызовом" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1225" y="970" width="320" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="sVgGYOTTxNKgq2wln5ES-37" value="&lt;div&gt;- @Deprecated @NonNull&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;PlacemarkMapObject addEmptyPlacemark(@NonNull Point point)&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="575" y="1010" width="520" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
