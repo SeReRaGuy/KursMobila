@@ -18,6 +18,9 @@ interface TagDao {
     @Query("SELECT * FROM tag")
     fun findAll(): LiveData<List<Tag>>
 
+    @Query("SELECT * FROM tag WHERE id=:id LIMIT 1")
+    fun findById(id: Int): LiveData<Tag>
+
     @Update
     suspend fun update(tag: Tag): Int
 
