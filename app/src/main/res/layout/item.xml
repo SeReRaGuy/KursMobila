@@ -25,14 +25,6 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/textViewSmall"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:text="ТЕКСТ"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textSize="20sp" />
-
     </LinearLayout>
 
     <ImageView
