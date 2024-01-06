@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/routes"
+    app:startDestination="@id/listTagFragment">
+
+    <fragment
+        android:id="@+id/listTagFragment"
+        android:name="com.example.mapYandex.ListTagFragment"
+        android:label="fragment_list_tag"
+        tools:layout="@layout/fragment_list_tag" >
+        <action
+            android:id="@+id/action_listTagFragment_to_editTagFragment"
+            app:destination="@id/editTagFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editTagFragment"
+        android:name="com.example.mapYandex.EditTagFragment"
+        android:label="fragment_edit_tag"
+        tools:layout="@layout/fragment_edit_tag" >
+        <action
+            android:id="@+id/action_editTagFragment_to_listTagFragment"
+            app:destination="@id/listTagFragment" />
+        <argument
+            android:name="tagId"
+            app:argType="integer" />
+    </fragment>
+    <argument
+        android:name="tagId"
+        app:argType="integer" />
+</navigation>

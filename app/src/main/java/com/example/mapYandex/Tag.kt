@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Tag (
-    @PrimaryKey val id: Int,
+    @PrimaryKey val id: Int?,
     val name: String?,
     val description: String?,
     val comment: String?,

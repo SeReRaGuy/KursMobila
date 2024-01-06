@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,6 +31,11 @@ class ListTagFragment : Fragment() {
             }
         }
         recyclerView.adapter = adapter
+
+        binding.addbuttonid.setOnClickListener {
+            val navAction = ListTagFragmentDirections.actionListTagFragmentToEditTagFragment(-1)
+            findNavController().navigate(navAction)
+        }
         return binding.root
     }
 
@@ -39,11 +45,11 @@ class ListTagFragment : Fragment() {
     }
 
     private val action = object : ActionInterface {
-//        override fun onItemClick(tagId: Int) {
-//            val action = ListTagFragmentDirections
-//                .actionListTagFragmentToSeeTagFragment(tagId)
-//            findNavController().navigate(action)
-//        }
+        override fun onItemClick(tagId: Int) {
+            val action = ListTagFragmentDirections
+                .actionListTagFragmentToEditTagFragment(tagId)
+            findNavController().navigate(action)
+        }
 
         override fun onDeleteTag(tagId: Int) {
             viewModel.deleteTag(tagId)

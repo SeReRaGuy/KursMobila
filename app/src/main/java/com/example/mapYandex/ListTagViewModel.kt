@@ -8,7 +8,8 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import kotlinx.coroutines.launch
 import kotlin.concurrent.thread
 
-class ListTagViewModel (private val database: TagDatabase) : ViewModel() {
+
+class ListTagViewModel(private val database: TagDatabase) : ViewModel() {
     var tags: LiveData<List<Tag>> = database.tagDao().findAll()
 
     fun deleteTag(tagId: Int) {
@@ -31,5 +32,4 @@ class ListTagViewModel (private val database: TagDatabase) : ViewModel() {
             }
         }
     }
-
 }

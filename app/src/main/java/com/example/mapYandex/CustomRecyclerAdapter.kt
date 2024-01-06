@@ -44,18 +44,18 @@ class CustomRecyclerAdapter(
             holder.thumbnailImage.setImageResource(R.drawable.null_image_wh)
         }
         holder.largeTextView.text = tag.name
-//        holder.itemView.setOnClickListener {
-//            action.onItemClick(tag.id!!) //Убрать !!
-//        }
+        holder.itemView.setOnClickListener {
+            action.onItemClick(tag.id!!)
+        }
         holder.deleteImage.setOnClickListener {
             AlertDialog.Builder(holder.deleteImage.context)
                 .setIcon(android.R.drawable.ic_menu_delete)
-                .setTitle("Вы действительно хотите удалить карточку?").setMessage(
-                    "Будет удалена карточка:" + "\n ${tag.name}"
-                ).setPositiveButton("Да") { _, _ -> action.onDeleteTag(tag.id!!) } //Убрать !!
+                .setTitle("Вы удаляете метку").setMessage(
+                    "Уничтожение метки:" + "\n ${tag.name}"
+                ).setPositiveButton("Да") { _, _ -> action.onDeleteTag(tag.id!!) }
                 .setNegativeButton("Нет") { _, _ ->
                     Toast.makeText(
-                        holder.deleteImage.context, "Удаление отменено", Toast.LENGTH_LONG
+                        holder.deleteImage.context, "Вы помиловали метку", Toast.LENGTH_LONG
                     ).show()
                 }.show()
         }

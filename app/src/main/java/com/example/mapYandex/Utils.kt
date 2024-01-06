@@ -50,6 +50,6 @@ open class CustomEmptyTextWatcher : TextWatcher {
 }
 
 interface ActionInterface {
-//    fun onItemClick(tagId: Int)
+    fun onItemClick(tagId: Int)
     fun onDeleteTag(tagId: Int)
 }

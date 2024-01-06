@@ -3,41 +3,21 @@ package com.example.mapYandex
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.yandex.mapkit.MapKitFactory
-import com.yandex.mapkit.mapview.MapView
 import com.yandex.mapkit.map.Map
 
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.graphics.Color
-import android.graphics.PointF
-import android.provider.ContactsContract
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.viewModelScope
 import com.example.mapYandex.databinding.ActivityBinding
-import com.yandex.mapkit.Animation
 import com.yandex.mapkit.geometry.Point
-import com.yandex.mapkit.layers.ObjectEvent
-import com.yandex.mapkit.logo.Alignment
-import com.yandex.mapkit.logo.HorizontalAlignment
-import com.yandex.mapkit.logo.VerticalAlignment
 import com.yandex.mapkit.map.CameraListener
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.CameraUpdateReason
 import com.yandex.mapkit.map.IconStyle
 import com.yandex.mapkit.map.InputListener
-import com.yandex.mapkit.map.MapObject
 import com.yandex.mapkit.map.MapObjectCollection
 import com.yandex.mapkit.map.PlacemarkMapObject
-import com.yandex.mapkit.user_location.UserLocationLayer
-import com.yandex.mapkit.user_location.UserLocationObjectListener
-import com.yandex.mapkit.user_location.UserLocationView
 import com.yandex.runtime.image.ImageProvider
-import kotlinx.coroutines.launch
 
 
 class Main : AppCompatActivity(), CameraListener {
@@ -122,30 +102,8 @@ class Main : AppCompatActivity(), CameraListener {
         placemarkMapObject.setIcon(ImageProvider.fromResource(this, marker),icstyle1)
         markerDataList[num] = placemarkMapObject //Хранение меток
         num += 1
-
-
-        val newTag = tag.value?.copy(
-            id = num,
-            name = null,
-            description = null,
-            comment = null,
-            image = null
-        )
-        newTag?.let {
-            viewModelScope.launch {
-                if (checkIfNewCard()) {
-                    database.tagDao().insert(it) //-
-//                        cardRepository.insert(it)
-                } else {
-                    database.cardDao().update(it) //-
-//                        cardRepository.update(it)
-                }
-                _status.value = Success()
-            }
-        }
     }
 
-    fun checkIfNewTag() = tagId == -1
     override fun onCameraPositionChanged(
         map: Map,
         cameraPosition: CameraPosition,
