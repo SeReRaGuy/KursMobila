@@ -23,7 +23,7 @@ fun Uri?.bitmap(context: Context): Bitmap? {
     }
 }
 
-class Converters {
+class TagConverters {
     @TypeConverter
     fun fromBitmapToByteArray(value: Bitmap?): ByteArray? {
         val stream = ByteArrayOutputStream()

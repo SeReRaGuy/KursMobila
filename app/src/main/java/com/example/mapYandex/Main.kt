@@ -1,6 +1,7 @@
 package com.example.mapYandex
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.map.Map
@@ -8,6 +9,9 @@ import com.yandex.mapkit.map.Map
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.room.Room
 import com.example.mapYandex.databinding.ActivityBinding
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraListener
@@ -15,12 +19,15 @@ import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.CameraUpdateReason
 import com.yandex.mapkit.map.IconStyle
 import com.yandex.mapkit.map.InputListener
+import com.yandex.mapkit.map.MapObject
 import com.yandex.mapkit.map.MapObjectCollection
+import com.yandex.mapkit.map.MapObjectTapListener
 import com.yandex.mapkit.map.PlacemarkMapObject
 import com.yandex.runtime.image.ImageProvider
+import kotlinx.coroutines.launch
 
 
-class Main : AppCompatActivity(), CameraListener {
+class Main : AppCompatActivity(), CameraListener, ViewModel() {
     private lateinit var binding: ActivityBinding
 
     private val startLocation = Point(50.593679, 36.576692)
@@ -91,17 +98,49 @@ class Main : AppCompatActivity(), CameraListener {
     }
 
     private fun setMarker(pointIn: Point) {
-        var database: TagDatabase
-        val _tag = MediatorLiveData<Tag>()
-        val tag: LiveData<Tag> = _tag
+//        var database: TagDatabase
+//        val _tag = MediatorLiveData<Tag>()
+//        val tag: LiveData<Tag> = _tag
 
 
-        lateinit var placemarkMapObject : PlacemarkMapObject
-        placemarkMapObject = mapObjectCollectionBigger.addPlacemark(pointIn, ImageProvider.fromResource(this, marker))
+        //ДОБАВИТЬ КООРДИНАТЫ (PlacemarkMapObject) В БД, НО СКРЫТЫЕ ОТ ПОЛЬЗОВАТЕЛЯ (чтобы при повторном
+        //запуске передать эти метки в HashMap) !!!СДЕЛАНО!!!
+
+        //Создать новую запись в БД  ???СДЕЛАНО???
+
+        //Запросить ID созданной записи
+
+        //Записать в HashMap полученный ID (num) и объект PlacemarkMapObject (сама метка), делается для того, чтобы
+        //при масштабировании уменьшались ВСЕ метки
+
+        //Передать объект PlacemarkMapObject в БД
+
+        //При запуске приложения, проинициализировать все метки и записать их в HashMap
+
+        //-------Создаём саму иконку и ставим её на карту-----------
+        val placemarkMapObject : PlacemarkMapObject =
+            mapObjectCollectionBigger.addPlacemark(pointIn, ImageProvider.fromResource(this, marker))
         placemarkMapObject.opacity = 0.5f // Устанавливаем прозрачность метке
         placemarkMapObject.setIcon(ImageProvider.fromResource(this, marker),icstyle1)
+        //----------------------------------------------------------
+
+        var database = TagDatabase.getInstance(this)
+//        val _tag = MediatorLiveData<Tag>()
+//        val tag: LiveData<Tag> = _tag
+//        val newTag = tag.value?.copy(
+//            name = null,
+//            description = null,
+//            comment = null,
+//            image = null,
+//            cord1 = pointIn.latitude,
+//            cord2 = pointIn.longitude
+//        )
+        database.tagDao().insert(Tag(null,null,null,null,null,pointIn.latitude,pointIn.longitude))
+
         markerDataList[num] = placemarkMapObject //Хранение меток
         num += 1
+
+        placemarkMapObject.addTapListener(mapObjectTapListener)
     }
 
     override fun onCameraPositionChanged(
@@ -125,6 +164,13 @@ class Main : AppCompatActivity(), CameraListener {
                     }
                 }
             }
+        }
+    }
+
+    private val mapObjectTapListener = object : MapObjectTapListener {
+        override fun onMapObjectTap(mapObject: MapObject, point: Point): Boolean{
+            Toast.makeText(applicationContext, "Эрмитаж — музей изобразительных искусств", Toast.LENGTH_SHORT).show()
+            return true
         }
     }
 

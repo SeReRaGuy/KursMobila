@@ -99,7 +99,7 @@ class EditTagViewModel(private val database: TagDatabase, val tagId: Int) :
         }
     }
 
-    private fun getEmptyTag() = Tag(null, null, null, null)
+    private fun getEmptyTag() = Tag(null, null, null, null,null,null,null)
 
     fun checkIfNewTag() = tagId == -1
 
