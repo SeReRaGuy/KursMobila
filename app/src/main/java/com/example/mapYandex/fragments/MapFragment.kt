@@ -47,8 +47,6 @@ class MapFragment : Fragment(), CameraListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-
-
         super.onCreate(savedInstanceState)
         setApiKey(savedInstanceState) // Проверяем: был ли уже ранее установлен API-ключ в приложении. Если нет - устанавливаем его.
         MapKitFactory.initialize(requireContext()) // Инициализация библиотеки для загрузки необходимых нативных библиотек.
@@ -71,10 +69,10 @@ class MapFragment : Fragment(), CameraListener {
 //        var tagDao = TagDatabase.getInstance(this).tagDao()
 //        tagDao.findAll()
 
-                binding.buttonOpenList.setOnClickListener{
-                    val action = MapFragmentDirections.actionMapFragmentToListTagFragment()
-                    findNavController().navigate(action)
-                }
+        binding.buttonOpenList.setOnClickListener {
+            val action = MapFragmentDirections.actionMapFragmentToListTagFragment()
+            findNavController().navigate(action)
+        }
         return binding.root
     }
 
@@ -91,6 +89,7 @@ class MapFragment : Fragment(), CameraListener {
         super.onSaveInstanceState(outState)
         outState.putBoolean("haveApiKey", true)
     }
+
 
     // Отображаем карты перед моментом, когда активити с картой станет видимой пользователю:
     override fun onStart() {

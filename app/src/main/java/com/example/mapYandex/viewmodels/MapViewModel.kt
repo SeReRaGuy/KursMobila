@@ -7,11 +7,6 @@ import com.example.mapYandex.data.TagDao
 import com.example.mapYandex.data.TagDatabase
 
 class MapViewModel (private val tagDao: TagDao) : ViewModel(){
-
-
-
-
-
     companion object {
         fun Factory(): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")

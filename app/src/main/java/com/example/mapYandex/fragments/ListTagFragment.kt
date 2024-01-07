@@ -34,11 +34,8 @@ class ListTagFragment : Fragment() {
         }
         recyclerView.adapter = adapter
 
-        binding.addbuttonid.setOnClickListener {
-            val navAction =
-                ListTagFragmentDirections.actionListTagFragmentToEditTagFragment(
-                    -1
-                )
+        binding.buttonToMap.setOnClickListener {
+            val navAction = ListTagFragmentDirections.actionListTagFragmentToMapFragment()
             findNavController().navigate(navAction)
         }
         return binding.root
