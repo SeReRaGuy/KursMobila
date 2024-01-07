@@ -48,7 +48,6 @@ class MapFragment : Fragment(), CameraListener {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         super.onCreate(savedInstanceState)
-        setApiKey(savedInstanceState) // Проверяем: был ли уже ранее установлен API-ключ в приложении. Если нет - устанавливаем его.
         MapKitFactory.initialize(requireContext()) // Инициализация библиотеки для загрузки необходимых нативных библиотек.
         _binding = FragmentMapBinding.inflate(
             layoutInflater, container, false
@@ -76,35 +75,6 @@ class MapFragment : Fragment(), CameraListener {
         return binding.root
     }
 
-    private fun setApiKey(savedInstanceState: Bundle?) {
-        val haveApiKey = savedInstanceState?.getBoolean("haveApiKey")
-            ?: false // При первом запуске приложения всегда false
-        if (!haveApiKey) {
-            MapKitFactory.setApiKey(MAPKIT_API_KEY) // API-ключ должен быть задан единожды перед инициализацией MapKitFactory
-        }
-    }
-
-    // Если Activity уничтожается (например, при нехватке памяти или при повороте экрана) - сохраняем информацию, что API-ключ уже был получен ранее
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putBoolean("haveApiKey", true)
-    }
-
-
-    // Отображаем карты перед моментом, когда активити с картой станет видимой пользователю:
-    override fun onStart() {
-        super.onStart()
-        MapKitFactory.getInstance().onStart()
-        binding.mapview.onStart()
-    }
-
-    // Останавливаем обработку карты, когда активити с картой становится невидимым для пользователя:
-    override fun onStop() {
-        binding.mapview.onStop()
-        MapKitFactory.getInstance().onStop()
-        super.onStop()
-    }
-
     private fun moveToStartLocation() {
         binding.mapview.map.move(
             CameraPosition(startLocation, zoomValue, 0.0f, 45.0f)
@@ -112,7 +82,6 @@ class MapFragment : Fragment(), CameraListener {
     }
 
     companion object {
-        const val MAPKIT_API_KEY = "acfc921a-3c8b-490a-8c83-b82f9fd50e44"
         const val ZOOM_BOUNDARY = 16.4f
         val marker = R.drawable.test // Добавляем ссылку на картинку
         val icstyle1 = IconStyle(null, null, null, null, null, 0.055f, null)
