@@ -10,10 +10,10 @@ import androidx.room.Update
 @Dao
 interface TagDao {
     @Insert
-    suspend fun insert(vararg Tags: Tag)
+    suspend fun insert(vararg tags: Tag)
 
     @Insert
-    suspend fun insert(Tags: Tag)
+    suspend fun insert(tag: Tag): Int
 
     @Query("SELECT * FROM tag")
     fun findAll(): LiveData<List<Tag>>

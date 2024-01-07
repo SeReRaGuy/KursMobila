@@ -24,10 +24,13 @@ import com.yandex.mapkit.map.MapObjectCollection
 import com.yandex.mapkit.map.MapObjectTapListener
 import com.yandex.mapkit.map.PlacemarkMapObject
 import com.yandex.runtime.image.ImageProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
-class Main : AppCompatActivity(), CameraListener, ViewModel() {
+class Main : AppCompatActivity(), CameraListener{
     private lateinit var binding: ActivityBinding
 
     private val startLocation = Point(50.593679, 36.576692)
@@ -103,20 +106,6 @@ class Main : AppCompatActivity(), CameraListener, ViewModel() {
 //        val tag: LiveData<Tag> = _tag
 
 
-        //ДОБАВИТЬ КООРДИНАТЫ (PlacemarkMapObject) В БД, НО СКРЫТЫЕ ОТ ПОЛЬЗОВАТЕЛЯ (чтобы при повторном
-        //запуске передать эти метки в HashMap) !!!СДЕЛАНО!!!
-
-        //Создать новую запись в БД  ???СДЕЛАНО???
-
-        //Запросить ID созданной записи
-
-        //Записать в HashMap полученный ID (num) и объект PlacemarkMapObject (сама метка), делается для того, чтобы
-        //при масштабировании уменьшались ВСЕ метки
-
-        //Передать объект PlacemarkMapObject в БД
-
-        //При запуске приложения, проинициализировать все метки и записать их в HashMap
-
         //-------Создаём саму иконку и ставим её на карту-----------
         val placemarkMapObject : PlacemarkMapObject =
             mapObjectCollectionBigger.addPlacemark(pointIn, ImageProvider.fromResource(this, marker))
@@ -124,7 +113,7 @@ class Main : AppCompatActivity(), CameraListener, ViewModel() {
         placemarkMapObject.setIcon(ImageProvider.fromResource(this, marker),icstyle1)
         //----------------------------------------------------------
 
-        var database = TagDatabase.getInstance(this)
+        var tagDao = TagDatabase.getInstance(this).tagDao()
 //        val _tag = MediatorLiveData<Tag>()
 //        val tag: LiveData<Tag> = _tag
 //        val newTag = tag.value?.copy(
@@ -135,10 +124,14 @@ class Main : AppCompatActivity(), CameraListener, ViewModel() {
 //            cord1 = pointIn.latitude,
 //            cord2 = pointIn.longitude
 //        )
-        database.tagDao().insert(Tag(null,null,null,null,null,pointIn.latitude,pointIn.longitude))
+
+        GlobalScope.launch(Dispatchers.IO) {
+            num = tagDao.insert(Tag(null, null, null, null, null, pointIn.latitude, pointIn.longitude))
+        }
+//        num = tagDao.insert(Tag(null,null,null,null,null,pointIn.latitude,pointIn.longitude))
 
         markerDataList[num] = placemarkMapObject //Хранение меток
-        num += 1
+//        num += 1
 
         placemarkMapObject.addTapListener(mapObjectTapListener)
     }
