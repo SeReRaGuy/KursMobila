@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
 import com.example.mapYandex.R
 import com.example.mapYandex.databinding.FragmentMapBinding
 import com.example.mapYandex.data.Tag
+import com.example.mapYandex.data.TagDao
 import com.example.mapYandex.data.TagDatabase
 import com.example.mapYandex.viewmodels.EditTagViewModel
 import com.example.mapYandex.viewmodels.MapViewModel
@@ -33,8 +35,6 @@ import kotlinx.coroutines.launch
 
 class MapFragment : Fragment(), CameraListener {
 
-    private val viewModel: MapViewModel by viewModels { MapViewModel.Factory() }
-
     private var _binding: FragmentMapBinding? = null
     private val binding get() = _binding!!
 
@@ -48,30 +48,50 @@ class MapFragment : Fragment(), CameraListener {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         super.onCreate(savedInstanceState)
-        MapKitFactory.initialize(requireContext()) // Инициализация библиотеки для загрузки необходимых нативных библиотек.
+        MapKitFactory.initialize(requireContext())
         _binding = FragmentMapBinding.inflate(
             layoutInflater, container, false
-        ) // Раздуваем макет только после того, как установили API-ключ
-
+        )
         moveToStartLocation()
-
-        mapObjectCollectionSmaller =
-            binding.mapview.map.mapObjects // Инициализируем коллекцию различных объектов на карте
-        mapObjectCollectionBigger =
-            binding.mapview.map.mapObjects // Инициализируем коллекцию различных объектов на карте
-        //setMarker(startLocation)
-
+        mapObjectCollectionSmaller = binding.mapview.map.mapObjects
+        mapObjectCollectionBigger = binding.mapview.map.mapObjects
         binding.mapview.map.addCameraListener(this)
-
         binding.mapview.map.addInputListener(inputListener)
-
-//        var tagDao = TagDatabase.getInstance(this).tagDao()
-//        tagDao.findAll()
-
         binding.buttonOpenList.setOnClickListener {
             val action = MapFragmentDirections.actionMapFragmentToListTagFragment()
             findNavController().navigate(action)
         }
+
+        var idInTag : Long = 0
+        var cord1InTag : Double = 0.0
+        var cord2InTag : Double = 0.0
+
+        lateinit var tags: LiveData<List<Tag>>
+        var tagDao = TagDatabase.getInstance(requireContext()).tagDao()
+        tags = tagDao.findAll()
+
+        tags.value?.let { tagsList ->
+            for (tag in tagsList) {
+                tag.id?.let { idValue ->
+                    idInTag = idValue
+                }
+                tag.cord1?.let { cord1Value ->
+                    cord1InTag = cord1Value
+                }
+                tag.cord2?.let { cord2Value ->
+                    cord2InTag = cord2Value
+                }
+                val pointForMapList = Point(cord1InTag,cord2InTag)
+                val placemarkMapObject: PlacemarkMapObject = mapObjectCollectionBigger.addPlacemark(
+                    pointForMapList, ImageProvider.fromResource(requireContext(), marker))
+                placemarkMapObject.opacity = 0.5f
+                placemarkMapObject.setIcon(ImageProvider.fromResource(requireContext(), marker), icstyle1)
+                markerDataList[idInTag] = placemarkMapObject
+                placemarkMapObject.addTapListener(mapObjectTapListener)
+            }
+        }
+
+
         return binding.root
     }
 
@@ -83,39 +103,20 @@ class MapFragment : Fragment(), CameraListener {
 
     companion object {
         const val ZOOM_BOUNDARY = 16.4f
-        val marker = R.drawable.test // Добавляем ссылку на картинку
+        val marker = R.drawable.test
         val icstyle1 = IconStyle(null, null, null, null, null, 0.055f, null)
         val icstyle2 = IconStyle(null, null, null, null, null, 0.02f, null)
         val markerDataList = HashMap<Long, PlacemarkMapObject>()
-        var num: Long = 0 //Прочитать высший id перед стартом
+        var num: Long = 0
     }
 
     private fun setMarker(pointIn: Point) {
-//        var database: TagDatabase
-//        val _tag = MediatorLiveData<Tag>()
-//        val tag: LiveData<Tag> = _tag
-
-
-        //-------Создаём саму иконку и ставим её на карту-----------
         val placemarkMapObject: PlacemarkMapObject = mapObjectCollectionBigger.addPlacemark(
             pointIn, ImageProvider.fromResource(requireContext(), marker)
         )
-        placemarkMapObject.opacity = 0.5f // Устанавливаем прозрачность метке
+        placemarkMapObject.opacity = 0.5f
         placemarkMapObject.setIcon(ImageProvider.fromResource(requireContext(), marker), icstyle1)
-        //----------------------------------------------------------
-
         var tagDao = TagDatabase.getInstance(requireContext()).tagDao()
-//        val _tag = MediatorLiveData<Tag>()
-//        val tag: LiveData<Tag> = _tag
-//        val newTag = tag.value?.copy(
-//            name = null,
-//            description = null,
-//            comment = null,
-//            image = null,
-//            cord1 = pointIn.latitude,
-//            cord2 = pointIn.longitude
-//        )
-
         GlobalScope.launch(Dispatchers.IO) {
             num = tagDao.insert(
                 Tag(
@@ -123,11 +124,7 @@ class MapFragment : Fragment(), CameraListener {
                 )
             )
         }
-//        num = tagDao.insert(Tag(null,null,null,null,null,pointIn.latitude,pointIn.longitude))
-
-        markerDataList[num] = placemarkMapObject //Хранение меток
-//        num += 1
-
+        markerDataList[num] = placemarkMapObject
         placemarkMapObject.addTapListener(mapObjectTapListener)
     }
 
@@ -137,7 +134,7 @@ class MapFragment : Fragment(), CameraListener {
         cameraUpdateReason: CameraUpdateReason,
         finished: Boolean
     ) {
-        if (finished) { // Если камера закончила движение
+        if (finished) {
             when {
                 cameraPosition.zoom >= ZOOM_BOUNDARY -> {
                     for ((Num) in markerDataList) {
