@@ -1,4 +1,4 @@
-package com.example.mapYandex
+package com.example.mapYandex.fragments
 
 import android.os.Bundle
 import android.text.Editable
@@ -11,7 +11,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.mapYandex.R
 import com.example.mapYandex.databinding.FragmentEditTagBinding
+import com.example.mapYandex.CustomEmptyTextWatcher
+import com.example.mapYandex.viewmodels.EditTagViewModel
+import com.example.mapYandex.Failed
+import com.example.mapYandex.Success
+import com.example.mapYandex.bitmap
 
 class EditTagFragment : Fragment() {
     private var _binding: FragmentEditTagBinding? = null

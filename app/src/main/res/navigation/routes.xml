@@ -3,20 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/routes"
-    app:startDestination="@id/listTagFragment">
+    app:startDestination="@id/mapFragment">
 
     <fragment
         android:id="@+id/listTagFragment"
-        android:name="com.example.mapYandex.ListTagFragment"
+        android:name="com.example.mapYandex.fragments.ListTagFragment"
         android:label="fragment_list_tag"
         tools:layout="@layout/fragment_list_tag" >
         <action
             android:id="@+id/action_listTagFragment_to_editTagFragment"
             app:destination="@id/editTagFragment" />
+        <action
+            android:id="@+id/action_listTagFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
     </fragment>
     <fragment
         android:id="@+id/editTagFragment"
-        android:name="com.example.mapYandex.EditTagFragment"
+        android:name="com.example.mapYandex.fragments.EditTagFragment"
         android:label="fragment_edit_tag"
         tools:layout="@layout/fragment_edit_tag" >
         <action
@@ -25,5 +28,13 @@
         <argument
             android:name="tagId"
             app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.mapYandex.fragments.MapFragment"
+        android:label="MapFragment" >
+        <action
+            android:id="@+id/action_mapFragment_to_listTagFragment"
+            app:destination="@id/listTagFragment" />
     </fragment>
 </navigation>

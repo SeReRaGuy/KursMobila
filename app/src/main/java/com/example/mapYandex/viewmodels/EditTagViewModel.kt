@@ -1,4 +1,4 @@
-package com.example.mapYandex
+package com.example.mapYandex.viewmodels
 
 import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
@@ -9,12 +9,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
+import com.example.mapYandex.Failed
+import com.example.mapYandex.Status
+import com.example.mapYandex.Success
+import com.example.mapYandex.data.Tag
+import com.example.mapYandex.data.TagDao
+import com.example.mapYandex.data.TagDatabase
 import kotlinx.coroutines.launch
 
 
-class EditTagViewModel(private val database: TagDatabase, val tagId: Long) :
+class EditTagViewModel(private val tagDao: TagDao, val tagId: Long) :
     ViewModel() {
-    private val _dbTag = database.tagDao().findById(tagId)
+    private val _dbTag = tagDao.findById(tagId)
 
     private var _currentTag: Tag? = null
 
@@ -89,9 +95,9 @@ class EditTagViewModel(private val database: TagDatabase, val tagId: Long) :
             newTag?.let {
                 viewModelScope.launch {
                     if (checkIfNewTag()) {
-                        database.tagDao().insert(it)
+                        tagDao.insert(it)
                     } else {
-                        database.tagDao().update(it)
+                        tagDao.update(it)
                     }
                     _status.value = Success()
                 }
@@ -122,7 +128,7 @@ class EditTagViewModel(private val database: TagDatabase, val tagId: Long) :
                 modelClass: Class<T>, extras: CreationExtras
             ): T {
                 val application = checkNotNull(extras[APPLICATION_KEY])
-                return EditTagViewModel(TagDatabase.getInstance(application), tagId) as T
+                return EditTagViewModel(TagDatabase.getInstance(application).tagDao(), tagId) as T
             }
         }
     }

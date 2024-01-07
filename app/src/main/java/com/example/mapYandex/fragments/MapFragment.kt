@@ -1,24 +1,27 @@
-package com.example.mapYandex
+package com.example.mapYandex.fragments
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.example.mapYandex.R
+import com.example.mapYandex.databinding.FragmentMapBinding
+import com.example.mapYandex.data.Tag
+import com.example.mapYandex.data.TagDatabase
+import com.example.mapYandex.viewmodels.EditTagViewModel
+import com.example.mapYandex.viewmodels.MapViewModel
 import com.yandex.mapkit.MapKitFactory
-import com.yandex.mapkit.map.Map
-
-
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.room.Room
-import com.example.mapYandex.databinding.ActivityBinding
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraListener
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.CameraUpdateReason
 import com.yandex.mapkit.map.IconStyle
 import com.yandex.mapkit.map.InputListener
+import com.yandex.mapkit.map.Map
 import com.yandex.mapkit.map.MapObject
 import com.yandex.mapkit.map.MapObjectCollection
 import com.yandex.mapkit.map.MapObjectTapListener
@@ -27,11 +30,13 @@ import com.yandex.runtime.image.ImageProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
+class MapFragment : Fragment(), CameraListener {
 
-class Main : AppCompatActivity(), CameraListener{
-    private lateinit var binding: ActivityBinding
+    private val viewModel: MapViewModel by viewModels { MapViewModel.Factory() }
+
+    private var _binding: FragmentMapBinding? = null
+    private val binding get() = _binding!!
 
     private val startLocation = Point(50.593679, 36.576692)
     private var zoomValue: Float = 17.0f
@@ -39,29 +44,43 @@ class Main : AppCompatActivity(), CameraListener{
     private lateinit var mapObjectCollectionSmaller: MapObjectCollection
     private lateinit var mapObjectCollectionBigger: MapObjectCollection
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+
+
         super.onCreate(savedInstanceState)
         setApiKey(savedInstanceState) // Проверяем: был ли уже ранее установлен API-ключ в приложении. Если нет - устанавливаем его.
-        MapKitFactory.initialize(this) // Инициализация библиотеки для загрузки необходимых нативных библиотек.
-        binding = ActivityBinding.inflate(layoutInflater) // Раздуваем макет только после того, как установили API-ключ
-        setContentView(binding.root) // Размещаем пользовательский интерфейс в экране активности
+        MapKitFactory.initialize(requireContext()) // Инициализация библиотеки для загрузки необходимых нативных библиотек.
+        _binding = FragmentMapBinding.inflate(
+            layoutInflater, container, false
+        ) // Раздуваем макет только после того, как установили API-ключ
 
         moveToStartLocation()
 
-        mapObjectCollectionSmaller = binding.mapview.map.mapObjects // Инициализируем коллекцию различных объектов на карте
-        mapObjectCollectionBigger = binding.mapview.map.mapObjects // Инициализируем коллекцию различных объектов на карте
+        mapObjectCollectionSmaller =
+            binding.mapview.map.mapObjects // Инициализируем коллекцию различных объектов на карте
+        mapObjectCollectionBigger =
+            binding.mapview.map.mapObjects // Инициализируем коллекцию различных объектов на карте
         //setMarker(startLocation)
 
         binding.mapview.map.addCameraListener(this)
 
         binding.mapview.map.addInputListener(inputListener)
 
-        var tagDao = TagDatabase.getInstance(this).tagDao()
-        tagDao.findAll()
+//        var tagDao = TagDatabase.getInstance(this).tagDao()
+//        tagDao.findAll()
+
+                binding.buttonOpenList.setOnClickListener{
+                    val action = MapFragmentDirections.actionMapFragmentToListTagFragment()
+                    findNavController().navigate(action)
+                }
+        return binding.root
     }
 
     private fun setApiKey(savedInstanceState: Bundle?) {
-        val haveApiKey = savedInstanceState?.getBoolean("haveApiKey") ?: false // При первом запуске приложения всегда false
+        val haveApiKey = savedInstanceState?.getBoolean("haveApiKey")
+            ?: false // При первом запуске приложения всегда false
         if (!haveApiKey) {
             MapKitFactory.setApiKey(MAPKIT_API_KEY) // API-ключ должен быть задан единожды перед инициализацией MapKitFactory
         }
@@ -97,10 +116,10 @@ class Main : AppCompatActivity(), CameraListener{
         const val MAPKIT_API_KEY = "acfc921a-3c8b-490a-8c83-b82f9fd50e44"
         const val ZOOM_BOUNDARY = 16.4f
         val marker = R.drawable.test // Добавляем ссылку на картинку
-        val icstyle1 = IconStyle(null,null,null,null,null,0.055f,null)
-        val icstyle2 = IconStyle(null,null,null,null,null,0.02f,null)
+        val icstyle1 = IconStyle(null, null, null, null, null, 0.055f, null)
+        val icstyle2 = IconStyle(null, null, null, null, null, 0.02f, null)
         val markerDataList = HashMap<Long, PlacemarkMapObject>()
-        var num : Long = 0 //Прочитать высший id перед стартом
+        var num: Long = 0 //Прочитать высший id перед стартом
     }
 
     private fun setMarker(pointIn: Point) {
@@ -110,13 +129,14 @@ class Main : AppCompatActivity(), CameraListener{
 
 
         //-------Создаём саму иконку и ставим её на карту-----------
-        val placemarkMapObject : PlacemarkMapObject =
-            mapObjectCollectionBigger.addPlacemark(pointIn, ImageProvider.fromResource(this, marker))
+        val placemarkMapObject: PlacemarkMapObject = mapObjectCollectionBigger.addPlacemark(
+            pointIn, ImageProvider.fromResource(requireContext(), marker)
+        )
         placemarkMapObject.opacity = 0.5f // Устанавливаем прозрачность метке
-        placemarkMapObject.setIcon(ImageProvider.fromResource(this, marker),icstyle1)
+        placemarkMapObject.setIcon(ImageProvider.fromResource(requireContext(), marker), icstyle1)
         //----------------------------------------------------------
 
-        var tagDao = TagDatabase.getInstance(this).tagDao()
+        var tagDao = TagDatabase.getInstance(requireContext()).tagDao()
 //        val _tag = MediatorLiveData<Tag>()
 //        val tag: LiveData<Tag> = _tag
 //        val newTag = tag.value?.copy(
@@ -129,7 +149,11 @@ class Main : AppCompatActivity(), CameraListener{
 //        )
 
         GlobalScope.launch(Dispatchers.IO) {
-            num = tagDao.insert(Tag(null, null, null, null, null, pointIn.latitude, pointIn.longitude))
+            num = tagDao.insert(
+                Tag(
+                    null, null, null, null, null, pointIn.latitude, pointIn.longitude
+                )
+            )
         }
 //        num = tagDao.insert(Tag(null,null,null,null,null,pointIn.latitude,pointIn.longitude))
 
@@ -148,15 +172,22 @@ class Main : AppCompatActivity(), CameraListener{
         if (finished) { // Если камера закончила движение
             when {
                 cameraPosition.zoom >= ZOOM_BOUNDARY -> {
-                    for ((Num) in markerDataList)
-                    {
-                        markerDataList[Num]?.setIcon(ImageProvider.fromResource(this, marker),icstyle1)
+                    for ((Num) in markerDataList) {
+                        markerDataList[Num]?.setIcon(
+                            ImageProvider.fromResource(
+                                requireContext(), marker
+                            ), icstyle1
+                        )
                     }
                 }
+
                 cameraPosition.zoom < ZOOM_BOUNDARY -> {
-                    for ((Num) in markerDataList)
-                    {
-                        markerDataList[Num]?.setIcon(ImageProvider.fromResource(this, marker),icstyle2)
+                    for ((Num) in markerDataList) {
+                        markerDataList[Num]?.setIcon(
+                            ImageProvider.fromResource(
+                                requireContext(), marker
+                            ), icstyle2
+                        )
                     }
                 }
             }
@@ -164,8 +195,10 @@ class Main : AppCompatActivity(), CameraListener{
     }
 
     private val mapObjectTapListener = object : MapObjectTapListener {
-        override fun onMapObjectTap(mapObject: MapObject, point: Point): Boolean{
-            Toast.makeText(applicationContext, "Эрмитаж — музей изобразительных искусств", Toast.LENGTH_SHORT).show()
+        override fun onMapObjectTap(mapObject: MapObject, point: Point): Boolean {
+            Toast.makeText(
+                requireContext(), "Эрмитаж — музей изобразительных искусств", Toast.LENGTH_SHORT
+            ).show()
             return true
         }
     }

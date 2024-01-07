@@ -1,9 +1,8 @@
-package com.example.mapYandex
+package com.example.mapYandex.data
 
 import android.graphics.Bitmap
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.yandex.mapkit.map.PlacemarkMapObject
 
 @Entity
 data class Tag (

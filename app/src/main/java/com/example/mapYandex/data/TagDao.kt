@@ -1,4 +1,4 @@
-package com.example.mapYandex
+package com.example.mapYandex.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
