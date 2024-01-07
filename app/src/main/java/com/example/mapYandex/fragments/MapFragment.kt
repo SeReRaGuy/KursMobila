@@ -62,34 +62,60 @@ class MapFragment : Fragment(), CameraListener {
             findNavController().navigate(action)
         }
 
-        var idInTag : Long = 0
+//        var idInTag : Long = 0
         var cord1InTag : Double = 0.0
         var cord2InTag : Double = 0.0
+//
+//        lateinit var tags: LiveData<List<Tag>>
+//        var tagDao = TagDatabase.getInstance(requireContext()).tagDao()
+//        tags = tagDao.findAll()
 
         lateinit var tags: LiveData<List<Tag>>
         var tagDao = TagDatabase.getInstance(requireContext()).tagDao()
         tags = tagDao.findAll()
 
-        tags.value?.let { tagsList ->
+        tags.observe(viewLifecycleOwner) { tagsList ->
             for (tag in tagsList) {
-                tag.id?.let { idValue ->
-                    idInTag = idValue
-                }
-                tag.cord1?.let { cord1Value ->
-                    cord1InTag = cord1Value
-                }
-                tag.cord2?.let { cord2Value ->
-                    cord2InTag = cord2Value
-                }
-                val pointForMapList = Point(cord1InTag,cord2InTag)
+                var idInTag = tag.id!!
+                cord1InTag = tag.cord1!!
+                cord2InTag = tag.cord2!!
+
+
+                val pointForMapList = Point(cord1InTag, cord2InTag)
                 val placemarkMapObject: PlacemarkMapObject = mapObjectCollectionBigger.addPlacemark(
-                    pointForMapList, ImageProvider.fromResource(requireContext(), marker))
+                    pointForMapList, ImageProvider.fromResource(requireContext(), marker)
+                )
                 placemarkMapObject.opacity = 0.5f
-                placemarkMapObject.setIcon(ImageProvider.fromResource(requireContext(), marker), icstyle1)
+                placemarkMapObject.setIcon(
+                    ImageProvider.fromResource(requireContext(), marker),
+                    icstyle1
+                )
                 markerDataList[idInTag] = placemarkMapObject
                 placemarkMapObject.addTapListener(mapObjectTapListener)
+                num = idInTag
             }
         }
+
+//        tags.value?.let { tagsList ->
+//            for (tag in tagsList) {
+//                tag.id?.let { idValue ->
+//                    idInTag = idValue
+//                }
+//                tag.cord1?.let { cord1Value ->
+//                    cord1InTag = cord1Value
+//                }
+//                tag.cord2?.let { cord2Value ->
+//                    cord2InTag = cord2Value
+//                }
+//                val pointForMapList = Point(cord1InTag,cord2InTag)
+//                val placemarkMapObject: PlacemarkMapObject = mapObjectCollectionBigger.addPlacemark(
+//                    pointForMapList, ImageProvider.fromResource(requireContext(), marker))
+//                placemarkMapObject.opacity = 0.5f
+//                placemarkMapObject.setIcon(ImageProvider.fromResource(requireContext(), marker), icstyle1)
+//                markerDataList[idInTag] = placemarkMapObject
+//                placemarkMapObject.addTapListener(mapObjectTapListener)
+//            }
+//        }
 
 
         return binding.root
