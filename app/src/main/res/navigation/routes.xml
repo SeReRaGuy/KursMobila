@@ -24,9 +24,6 @@
             app:destination="@id/listTagFragment" />
         <argument
             android:name="tagId"
-            app:argType="integer" />
+            app:argType="long" />
     </fragment>
-    <argument
-        android:name="tagId"
-        app:argType="integer" />
 </navigation>

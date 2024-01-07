@@ -12,7 +12,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import kotlinx.coroutines.launch
 
 
-class EditTagViewModel(private val database: TagDatabase, val tagId: Int) :
+class EditTagViewModel(private val database: TagDatabase, val tagId: Long) :
     ViewModel() {
     private val _dbTag = database.tagDao().findById(tagId)
 
@@ -101,7 +101,7 @@ class EditTagViewModel(private val database: TagDatabase, val tagId: Int) :
 
     private fun getEmptyTag() = Tag(null, null, null, null,null,null,null)
 
-    fun checkIfNewTag() = tagId == -1
+    fun checkIfNewTag() = tagId == -1L
 
 
     private fun checkAllIfNotBlank(
@@ -116,7 +116,7 @@ class EditTagViewModel(private val database: TagDatabase, val tagId: Int) :
     }
 
     companion object {
-        fun Factory(tagId: Int): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+        fun Factory(tagId: Long): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(
                 modelClass: Class<T>, extras: CreationExtras

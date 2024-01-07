@@ -7,7 +7,7 @@ import com.yandex.mapkit.map.PlacemarkMapObject
 
 @Entity
 data class Tag (
-    @PrimaryKey(autoGenerate = true) val id: Int?,
+    @PrimaryKey(autoGenerate = true) val id: Long?,
     val name: String?,
     val description: String?,
     val comment: String?,

@@ -7,7 +7,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = [Tag::class], version = 2)
+@Database(entities = [Tag::class], version = 10)
 @TypeConverters(TagConverters::class)
 abstract class TagDatabase : RoomDatabase(){
     abstract fun tagDao(): TagDao

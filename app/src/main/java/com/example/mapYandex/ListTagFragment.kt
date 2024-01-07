@@ -45,13 +45,13 @@ class ListTagFragment : Fragment() {
     }
 
     private val action = object : ActionInterface {
-        override fun onItemClick(tagId: Int) {
+        override fun onItemClick(tagId: Long) {
             val action = ListTagFragmentDirections
                 .actionListTagFragmentToEditTagFragment(tagId)
             findNavController().navigate(action)
         }
 
-        override fun onDeleteTag(tagId: Int) {
+        override fun onDeleteTag(tagId: Long) {
             viewModel.deleteTag(tagId)
         }
     }

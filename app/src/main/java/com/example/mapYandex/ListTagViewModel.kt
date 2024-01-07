@@ -12,7 +12,7 @@ import kotlin.concurrent.thread
 class ListTagViewModel(private val database: TagDatabase) : ViewModel() {
     var tags: LiveData<List<Tag>> = database.tagDao().findAll()
 
-    fun deleteTag(tagId: Int) {
+    fun deleteTag(tagId: Long) {
         thread {
             val tag = tags.value?.first { it.id == tagId }
             tag?.let { viewModelScope.launch { database.tagDao().delete(it) } }

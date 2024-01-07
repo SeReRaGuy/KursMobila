@@ -55,6 +55,9 @@ class Main : AppCompatActivity(), CameraListener{
         binding.mapview.map.addCameraListener(this)
 
         binding.mapview.map.addInputListener(inputListener)
+
+        var tagDao = TagDatabase.getInstance(this).tagDao()
+        tagDao.findAll()
     }
 
     private fun setApiKey(savedInstanceState: Bundle?) {
@@ -96,8 +99,8 @@ class Main : AppCompatActivity(), CameraListener{
         val marker = R.drawable.test // Добавляем ссылку на картинку
         val icstyle1 = IconStyle(null,null,null,null,null,0.055f,null)
         val icstyle2 = IconStyle(null,null,null,null,null,0.02f,null)
-        val markerDataList = HashMap<Int, PlacemarkMapObject>()
-        var num : Int = 0 //Прочитать высший id перед стартом
+        val markerDataList = HashMap<Long, PlacemarkMapObject>()
+        var num : Long = 0 //Прочитать высший id перед стартом
     }
 
     private fun setMarker(pointIn: Point) {
