@@ -18,8 +18,7 @@ import com.example.mapYandex.data.TagDatabase
 import kotlinx.coroutines.launch
 
 
-class EditTagViewModel(private val tagDao: TagDao, val tagId: Long) :
-    ViewModel() {
+class EditTagViewModel(private val tagDao: TagDao, val tagId: Long) : ViewModel() {
     private val _dbTag = tagDao.findById(tagId)
 
     private var _currentTag: Tag? = null
@@ -83,29 +82,22 @@ class EditTagViewModel(private val tagDao: TagDao, val tagId: Long) :
         name: String, description: String, comment: String
     ) {
         val image = image.value
-        if (checkAllIfNotBlank(name, description, comment)) {
-            _status.value = Failed("One or several fields are blank")
-        } else {
-            val newTag = tag.value?.copy(
-                name = name,
-                description = description,
-                comment = comment,
-                image = image
-            )
-            newTag?.let {
-                viewModelScope.launch {
-                    if (checkIfNewTag()) {
-                        tagDao.insert(it)
-                    } else {
-                        tagDao.update(it)
-                    }
-                    _status.value = Success()
+        val newTag = tag.value?.copy(
+            name = name, description = description, comment = comment, image = image
+        )
+        newTag?.let {
+            viewModelScope.launch {
+                if (checkIfNewTag()) {
+                    tagDao.insert(it)
+                } else {
+                    tagDao.update(it)
                 }
+                _status.value = Success()
             }
         }
     }
 
-    private fun getEmptyTag() = Tag(null, null, null, null,null,null,null)
+    private fun getEmptyTag() = Tag(null, null, null, null, null, null, null)
 
     fun checkIfNewTag() = tagId == -1L
 
