@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.mapYandex"
-        minSdk = 33
+        minSdk = 29 //33
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
