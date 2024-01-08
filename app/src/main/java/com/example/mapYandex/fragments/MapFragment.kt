@@ -32,6 +32,8 @@ import com.yandex.runtime.image.ImageProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
+import kotlin.math.abs
 
 class MapFragment : Fragment(), CameraListener {
 
@@ -85,7 +87,7 @@ class MapFragment : Fragment(), CameraListener {
                 val placemarkMapObject: PlacemarkMapObject = mapObjectCollectionBigger.addPlacemark(
                     pointForMapList, ImageProvider.fromResource(requireContext(), marker)
                 )
-                placemarkMapObject.opacity = 0.5f
+//                placemarkMapObject.opacity = 0.5f
                 placemarkMapObject.setIcon(
                     ImageProvider.fromResource(requireContext(), marker),
                     icstyle1
@@ -140,7 +142,7 @@ class MapFragment : Fragment(), CameraListener {
         val placemarkMapObject: PlacemarkMapObject = mapObjectCollectionBigger.addPlacemark(
             pointIn, ImageProvider.fromResource(requireContext(), marker)
         )
-        placemarkMapObject.opacity = 0.5f
+//        placemarkMapObject.opacity = 0.5f
         placemarkMapObject.setIcon(ImageProvider.fromResource(requireContext(), marker), icstyle1)
         var tagDao = TagDatabase.getInstance(requireContext()).tagDao()
         GlobalScope.launch(Dispatchers.IO) {
@@ -187,12 +189,75 @@ class MapFragment : Fragment(), CameraListener {
 
     private val mapObjectTapListener = object : MapObjectTapListener {
         override fun onMapObjectTap(mapObject: MapObject, point: Point): Boolean {
-            Toast.makeText(
-                requireContext(), "Эрмитаж — музей изобразительных искусств", Toast.LENGTH_SHORT
-            ).show()
+
+
+
+//            for ((key, value) in markerDataList) {
+//                val placemarkPointLocation = value.getGeometry() // Получаем Point из PlacemarkMapObject
+//
+//                var placemarkLatitude : Double = placemarkPointLocation.latitude
+//                var placemarkLongitude : Double = placemarkPointLocation.longitude
+//
+//                var pointLatitude : Double = point.latitude
+//                var pointLongitude : Double = point.longitude
+//                // Проверяем, совпадают ли Point
+//                if (placemarkLatitude == pointLatitude && placemarkLongitude == pointLongitude) {
+//                    // Если Point совпадают, получаем идентификатор
+//                    val action =
+//                        MapFragmentDirections.actionMapFragmentToEditTagFragment(
+//                            key
+//                        )
+//                    findNavController().navigate(action)
+//                    // Здесь вы можете использовать markerId для дальнейших действий
+//                    break
+//                }
+//            }
+
+            var idForBD : Long = 0L
+            var help = 0
+
+            var subtractionLatitudeMIN : Double = 0.0
+            var subtractionLongitudeMIN : Double = 0.0
+            for ((key, value) in markerDataList) {
+
+                val placemarkPointLocation = value.getGeometry() // Получаем Point из PlacemarkMapObject
+
+                var placemarkLatitude : Double = placemarkPointLocation.latitude
+                var placemarkLongitude : Double = placemarkPointLocation.longitude
+
+                var pointLatitude : Double = point.latitude
+                var pointLongitude : Double = point.longitude
+
+                var subtractionLatitude : Double = abs(placemarkLatitude - pointLatitude)
+                var subtractionLongitude : Double = abs(placemarkLongitude - pointLongitude)
+
+                if (help == 0)
+                {
+                    help = 1
+                    subtractionLatitudeMIN = subtractionLatitude
+                    subtractionLongitudeMIN = subtractionLongitude
+                    idForBD = key
+                }
+                if (subtractionLatitudeMIN > subtractionLatitude && subtractionLongitudeMIN > subtractionLongitude)
+                {
+                    subtractionLatitudeMIN = subtractionLatitude
+                    subtractionLongitudeMIN = subtractionLongitude
+                    idForBD = key
+                }
+            }
+            val action =
+                MapFragmentDirections.actionMapFragmentToEditTagFragment(
+                    idForBD
+                )
+            findNavController().navigate(action)
+
+
+
+
             return true
         }
     }
+
 
     val inputListener = object : InputListener {
         override fun onMapTap(map: Map, point: Point) {

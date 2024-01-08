@@ -36,5 +36,8 @@
         <action
             android:id="@+id/action_mapFragment_to_listTagFragment"
             app:destination="@id/listTagFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_editTagFragment"
+            app:destination="@id/editTagFragment" />
     </fragment>
 </navigation>
