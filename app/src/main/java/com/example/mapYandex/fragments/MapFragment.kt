@@ -154,6 +154,12 @@ class MapFragment : Fragment(), CameraListener {
         }
         markerDataList[num] = placemarkMapObject
         placemarkMapObject.addTapListener(mapObjectTapListener)
+
+        val action =
+            MapFragmentDirections.actionMapFragmentToEditTagFragment(
+                num
+            )
+        findNavController().navigate(action)
     }
 
     override fun onCameraPositionChanged(
