@@ -1,4 +1,4 @@
-package com.example.mapYandex.fragments
+package com.example.mapYandex.fragments //МИЛЛИОН ДВЕСТИ НА БАЛАНСЕ
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
