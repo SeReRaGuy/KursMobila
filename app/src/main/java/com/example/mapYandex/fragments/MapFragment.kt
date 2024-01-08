@@ -131,7 +131,7 @@ class MapFragment : Fragment(), CameraListener {
 
     companion object {
         const val ZOOM_BOUNDARY = 16.4f
-        val marker = R.drawable.test
+        val marker = R.drawable.test2
         val icstyle1 = IconStyle(null, null, null, null, null, 0.055f, null)
         val icstyle2 = IconStyle(null, null, null, null, null, 0.02f, null)
         val markerDataList = HashMap<Long, PlacemarkMapObject>()
