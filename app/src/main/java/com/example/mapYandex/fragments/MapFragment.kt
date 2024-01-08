@@ -148,7 +148,7 @@ class MapFragment : Fragment(), CameraListener {
         GlobalScope.launch(Dispatchers.IO) {
             num = tagDao.insert(
                 Tag(
-                    null, null, null, null, null, pointIn.latitude, pointIn.longitude
+                    null, "БЕЗ НАЗВАНИЯ", null, null, null, pointIn.latitude, pointIn.longitude
                 )
             )
         }
